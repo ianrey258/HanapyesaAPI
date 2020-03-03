@@ -22,6 +22,6 @@ class UserModel extends CI_Model{
 
     public function updateUser($data){
         $this->db->replace('user',$data);
-        return $data['id'];
+        return $this->searchUser($data);
     }
 }
