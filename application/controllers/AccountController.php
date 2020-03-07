@@ -1,90 +1,95 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class UserAccount extends CI_Controller {
+class AccountController extends CI_Controller {
 
-    function __contruct(){
-        parent::__contruct();
+    function __construct(){
+        parent::__construct();
     }
 
-	public function index()
-	{
+	public function index(){
         //$method = $this->input->$_SERVER("REQUEST_METHOD");
+        echo 'warrap!!';
     }
 
-    public function fetchUserImage(){
+    public function insertUser(){
+        $table = 'user';
         $data = $this->input->post();
-        if(!empty($data)){
-            $result = $this->UserImageModel->searchUserImage($data);
+        if(array_key_exists('id',$data)){
+            $result = $this->TableModel->updateData($table,$data);
         } else {
-            $result = $this->UserImageModel->getUserImages();
+            $result = $this->TableModel->insertData($table,$data);
         }
         $this->setOutput($result);
     }
     
     public function fetchUser(){
+        $table = 'user';
         $data = $this->input->post();
-        if(!empty($data)){
-            $result = $this->UserModel->searchUser($data);
+        if(empty($data)){
+            $result = $this->TableModel->getDatas($table);
         } else {
-            $result = $this->UserModel->getUsers();
+            $result = $this->TableModel->getData($table,$data);
+        }
+        $this->setOutput($result);
+    }
+    
+    public function insertUserAccount(){
+        $table = 'user_account';
+        $data = $this->input->post();
+        if(array_key_exists('id',$data)){
+            $result = $this->TableModel->updateData($table,$data);
+        } else {
+            $result = $this->TableModel->insertData($table,$data);
         }
         $this->setOutput($result);
     }
 
     public function fetchUserAccount(){
+        $table = 'user_account';
         $data = $this->input->post();
-        if(!empty($data)){
-            $result = $this->UserAccountModel->searchUserAccount($data);
+        if(empty($data)){
+            $result = $this->TableModel->getDatas($table);
         } else {
-            $result = $this->UserAccountModel->getUsersAccount();
+            $result = $this->TableModel->getData($table,$data);
         }
         $this->setOutput($result);
     }
 
-    public function fecthUserId(){
+    public function insertNotification(){
+        $table = 'item';
         $data = $this->input->post();
-        $result = $this->UserModel->searchData();
-        $this->setOutput($result);
-    }
-
-    public function fecthUserAccountId(){
-        $data = $this->input->post();
-        $result = $this->UserAccountModel->searchData();
+        if(array_key_exists('id',$data)){
+            $result = $this->TableModel->updateData($table,$data);
+        } else {
+            $result = $this->TableModel->insertData($table,$data);
+        }
         $this->setOutput($result);
     }
 
     public function insertUserImage(){
+        $table = 'user_img';
         $data = $this->input->post();
         if(array_key_exists("id",$data)){
-            $oldImg = $this->UserImageModel->searchUserImage(array('id' => $data['id']));
+            $oldImg = $this->ImageModel->searchImage($table,array('id' => $data['id']));
             $this->updateUserImg($oldImg);
-            $result = $this->UserImageModel->updateUserImage($data);
+            $result = $this->ImageModel->updateImage($table,$data);
         } else {
             if(array_key_exists("binaryfile",$data)){
                 $this->uploadUserImg();
             }
-            $result = $this->UserImageModel->insertUserImage($data);
+            $result = $this->ImageModel->insertImage($table,$data);
         }
         $this->setOutput($result);
     }
 
-    public function insertUser(){
+    public function fetchUserImage(){
+        $table = 'user_img';
         $data = $this->input->post();
-        if(array_key_exists("id",$data)){
-            $result = $this->UserModel->updateUser($data);
+        if(!empty($data)){
+            $result = $this->ImageModel->searchImage($table,$data);
         } else {
-            $result = $this->UserModel->insertUser($data);
-        }
-        $this->setOutput($result);
-    }
-
-    public function insertUserAccount(){
-        $data = $this->input->post();
-        if(array_key_exists("id",$data)){
-            $result = $this->UserAccountModel->updateUserAccount($data);
-        } else {
-            $result = $this->UserAccountModel->insertUserAccount($data);
+            $result = $this->ImageModel->getImages($table);
         }
         $this->setOutput($result);
     }
@@ -103,7 +108,7 @@ class UserAccount extends CI_Controller {
         $this->uploadUserImg();
     }
 
-    public function deleteUserImage($image){
+    private function deleteUserImage($image){
         unlink('./assets/UserImage/'.$image);
     }
 
