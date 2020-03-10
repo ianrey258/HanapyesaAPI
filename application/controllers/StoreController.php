@@ -16,7 +16,7 @@ class StoreController extends CI_Controller{
         }
         $this->setOutput($result);
     }
-
+    
     public function fetchStore(){
         $table = 'store';
         $data = $this->input->post();
@@ -76,12 +76,12 @@ class StoreController extends CI_Controller{
         $table = 'store_img';
         $data = $this->input->post();
         if(array_key_exists("id",$data)){
-            //$oldImg = $this->ImageModel->searchImage($table,array('id' => $data['id']));
-            //$this->updateUserImg($oldImg);
+            $oldImg = $this->ImageModel->searchImage($table,array('id' => $data['id']));
+            $this->updateStoreImg($oldImg);
             $result = $this->ImageModel->updateImage($table,$data);
         } else {
             if(array_key_exists("binaryfile",$data)){
-                //$this->uploadUserImg();
+                $this->uploadStoreImg();
             }
             $result = $this->ImageModel->insertImage($table,$data);
         }
@@ -101,8 +101,8 @@ class StoreController extends CI_Controller{
 
     public function removeStoreImage(){
         $data = $this->input->post();
-        $result = $this->$TableModel->deleteData($data);
-        //$this->deleteStoreImage->($data['filename']);
+        $result = $this->TableModel->deleteData($data);
+        $this->deleteStoreImage($data['filename']);
     }
 
     public function insertStoreApprovalImage(){

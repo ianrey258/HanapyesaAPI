@@ -17,7 +17,7 @@ class TableModel extends CI_Model{
     }
 
     public function updateData($table,$data){
-        $this->db->replace($table,$data);
+        $this->db->update($table,$data);
         return $this->getData($table,$data);
     }
 
