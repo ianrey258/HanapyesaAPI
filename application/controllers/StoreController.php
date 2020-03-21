@@ -41,6 +41,71 @@ class StoreController extends CI_Controller{
         $result = $this->fetchData($table);
         $this->setOutput($result);
     }
+    //ItemRating
+    public function insertItemRating(){
+        $table = 'item_rating';
+        $result = $this->insertData($table);
+        $this->setOutput($result);
+    }
+
+    public function fetchItemRating(){
+        $table = 'item_rating';
+        $result = $this->fetchData($table);
+        $this->setOutput($result);
+    }
+
+    public function fetchStoreItemRating(){
+        $data = $this->input->post();
+        $result = $this->ProcedureModel->getStoreItemRate($data);
+        $this->setOutput($result);
+    }
+    //ItemReviews
+    public function insertItemReview(){
+        $table = 'item_reviews';
+        $result = $this->insertData($table);
+        $this->setOutput($result);
+    }
+
+    public function fetchItemReview(){
+        $table = 'item_reviews';
+        $result = $this->fetchData($table);
+        $this->setOutput($result);
+    }
+
+    public function fetchStoreItemReviews(){
+        $data = $this->input->post();
+        $result = $this->ProcedureModel->getStoreItemReviews($data);
+        $this->setOutput($result);
+    }
+    //StoreItem
+    public function insertStoreItem(){
+        $table = 'storeitem';
+        $result = $this->insertData($table);
+        $this->setOutput($result);
+    }
+    public function fetchStoreItem(){
+        $data = $this->input->post();
+        $result = $this->ProcedureModel->getStoreItem($data);
+        $this->setOutput($result);
+    }
+    //Item Category
+    public function fetchCategory(){
+        $table = 'item_category';
+        $result = $this->fetchData($table);
+        $this->setOutput($result);
+    }
+    //Item Tags
+    public function fetchTags(){
+        $table = 'item_tags';
+        $result = $this->fetchData($table);
+        $this->setOutput($result);
+    }
+    //Address
+    public function fetchAddress(){
+        $table = 'zip_code';
+        $result = $this->fetchData($table);
+        $this->setOutput($result);
+    }
     //Data crud Util
     private function insertData($table){
         $data = $this->input->post();
@@ -49,7 +114,7 @@ class StoreController extends CI_Controller{
         } else {
             $result = $this->TableModel->insertData($table,$data);
         }
-        $this->setOutput($result);
+        return $result;
     }
 
     private function fetchData($table){

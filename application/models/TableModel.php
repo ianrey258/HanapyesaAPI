@@ -17,6 +17,7 @@ class TableModel extends CI_Model{
     }
 
     public function updateData($table,$data){
+        $this->db->where('id',$data['id']);
         $this->db->update($table,$data);
         return $this->getData($table,$data);
     }

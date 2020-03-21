@@ -54,7 +54,13 @@ class ImageController extends CI_Controller{
 
     public function fetchItemImage(){
         $table = 'item_img';
-       $result =  $this->fecthImage($table);
+        $result =  $this->fecthImage($table);
+        $this->setOutput($result);
+    }
+
+    public function fetchStoreItemImages(){
+        $data = $this->input->post();
+        $result = $this->ProcedureModel->getStoreItemImage($data);
         $this->setOutput($result);
     }
 
@@ -78,7 +84,6 @@ class ImageController extends CI_Controller{
         $result =  $this->fecthImage($table);
         $this->setOutput($result);
     }
-
 
     //Image Crud Functions
     private function insertImage($table,$path){
@@ -116,9 +121,9 @@ class ImageController extends CI_Controller{
     private function updateImage($oldImgdata,$path){
         $convertedimg = json_decode(json_encode($oldImgdata[0]),true);
         if($convertedimg['filename'] !=  'null'){
-            $this->deleteUserImage($convertedimg['filename']);
+            $this->deleteImage($convertedimg['filename'],$path);
         }
-        $this->uploadUserImg($path);
+        $this->uploadImage($path);
     }
 
     private function deleteImage($image,$path){

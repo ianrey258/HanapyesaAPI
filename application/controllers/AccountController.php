@@ -47,6 +47,18 @@ class AccountController extends CI_Controller {
         $result = $this->fetchData($table);
         $this->setOutput($result);
     }
+    //NotificationType
+    public function fetchNotificationType(){
+        $table = 'notificationtype';
+        $result = $this->fetchData($table);
+        $this->setOutput($result);
+    }
+    //StatusType
+    public function fetchStatusType(){
+        $table = 'statustype';
+        $result = $this->fetchData($table);
+        $this->setOutput($result);
+    }
 
     // public function ImageUpload(){
     //     $this->load->view('imageUpload');
@@ -83,7 +95,7 @@ class AccountController extends CI_Controller {
         } else {
             $result = $this->TableModel->insertData($table,$data);
         }
-        $this->setOutput($result);
+        return $result;
     }
     
     private function fetchData($table){
