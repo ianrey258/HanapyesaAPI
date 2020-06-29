@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2020 at 11:50 AM
+-- Generation Time: Jun 29, 2020 at 09:17 AM
 -- Server version: 10.1.40-MariaDB
 -- PHP Version: 7.1.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -32,10 +31,37 @@ USE `hanapyesa`;
 
 CREATE TABLE `bidders` (
   `id` int(11) NOT NULL,
-  `bidsectionId` int(11) NOT NULL,
+  `bidItemId` int(11) NOT NULL,
   `accountId` int(11) NOT NULL,
-  `itemId` int(11) NOT NULL,
-  `isWinner` tinyint(1) NOT NULL DEFAULT '0'
+  `suggestedItemId` int(11) DEFAULT NULL,
+  `requestStatus` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bidders`
+--
+
+INSERT INTO `bidders` (`id`, `bidItemId`, `accountId`, `suggestedItemId`, `requestStatus`) VALUES
+(16, 21, 26, 26, 12),
+(17, 22, 26, 27, 12),
+(18, 23, 26, 28, 17),
+(19, 24, 26, 30, 16);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bid_chat_area`
+--
+
+CREATE TABLE `bid_chat_area` (
+  `id` int(11) NOT NULL,
+  `bidItemId` int(11) NOT NULL,
+  `recieverId` int(11) NOT NULL,
+  `senderId` int(11) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `datetime` datetime NOT NULL,
+  `messageType` int(11) NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -46,12 +72,86 @@ CREATE TABLE `bidders` (
 
 CREATE TABLE `bid_item` (
   `id` int(11) NOT NULL,
-  `accountId` int(11) NOT NULL,
   `bidItem` int(11) NOT NULL,
-  `budgetMoney` int(11) NOT NULL,
-  `bidStatus` int(11) NOT NULL,
-  `datetime` datetime NOT NULL
+  `datetime` date NOT NULL,
+  `sendLocation` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bid_item`
+--
+
+INSERT INTO `bid_item` (`id`, `bidItem`, `datetime`, `sendLocation`) VALUES
+(21, 26, '2020-06-23', 9000),
+(22, 27, '2020-06-23', 9000),
+(23, 28, '2020-06-23', 9000),
+(24, 29, '2020-06-25', 9000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bid_item_detail`
+--
+
+CREATE TABLE `bid_item_detail` (
+  `id` int(11) NOT NULL,
+  `itemName` varchar(255) NOT NULL,
+  `itemPriceorBudget` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bid_item_detail`
+--
+
+INSERT INTO `bid_item_detail` (`id`, `itemName`, `itemPriceorBudget`, `description`) VALUES
+(26, 'iahrud', '600', 'hsud'),
+(27, 'ianudud', '600', 'hdhx'),
+(28, 'short', '100', 'bahalag 2nd hand'),
+(29, 'Laptop', '2500', 'Bahalag 2nd hand'),
+(30, 'Asus laptop - 9800', '2000', '1 year used');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bid_item_img`
+--
+
+CREATE TABLE `bid_item_img` (
+  `id` int(11) NOT NULL,
+  `parentId` int(11) NOT NULL,
+  `filename` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bid_item_img`
+--
+
+INSERT INTO `bid_item_img` (`id`, `parentId`, `filename`) VALUES
+(2, 29, '527602_IMG_20200218_140238.jpg'),
+(3, 29, '291386_IMG_20200218_140238.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bid_manager`
+--
+
+CREATE TABLE `bid_manager` (
+  `ownerId` int(11) NOT NULL,
+  `bidItemId` int(11) NOT NULL,
+  `bidStatus` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bid_manager`
+--
+
+INSERT INTO `bid_manager` (`ownerId`, `bidItemId`, `bidStatus`) VALUES
+(6, 21, 5),
+(6, 22, 5),
+(6, 23, 5),
+(6, 24, 5);
 
 -- --------------------------------------------------------
 
@@ -71,7 +171,7 @@ CREATE TABLE `gio_address` (
 --
 
 INSERT INTO `gio_address` (`id`, `storeId`, `longitude`, `latitude`) VALUES
-(1, 37, '59.19149', '129.60606'),
+(1, 37, '124.6318254', '8.505401'),
 (15, 51, '0', '0');
 
 -- --------------------------------------------------------
@@ -91,6 +191,13 @@ CREATE TABLE `item` (
   `categoryId` int(11) NOT NULL,
   `topupId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `item`
+--
+
+INSERT INTO `item` (`id`, `itemName`, `itemPrice`, `itemDescription`, `itemStack`, `itemRating`, `tagId`, `categoryId`, `topupId`) VALUES
+(1, 'Laptop (Asus)', '2500', 'Brand New', '5', 0, 1, 5, 1);
 
 --
 -- Triggers `item`
@@ -147,6 +254,13 @@ CREATE TABLE `item_img` (
   `filename` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `item_img`
+--
+
+INSERT INTO `item_img` (`id`, `parentId`, `filename`) VALUES
+(1, 1, '353486_IMG_20200218_140238.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -161,6 +275,13 @@ CREATE TABLE `item_rating` (
   `star2` int(11) NOT NULL DEFAULT '0',
   `star1` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `item_rating`
+--
+
+INSERT INTO `item_rating` (`itemId`, `star5`, `star4`, `star3`, `star2`, `star1`) VALUES
+(1, 0, 0, 0, 0, 0);
 
 --
 -- Triggers `item_rating`
@@ -240,6 +361,27 @@ INSERT INTO `item_tags` (`id`, `tagName`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `messagetype`
+--
+
+CREATE TABLE `messagetype` (
+  `id` int(11) NOT NULL,
+  `messageType` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `messagetype`
+--
+
+INSERT INTO `messagetype` (`id`, `messageType`) VALUES
+(1, 'Text'),
+(2, 'Picture'),
+(3, 'Video'),
+(4, 'File');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `notificationtype`
 --
 
@@ -256,7 +398,7 @@ INSERT INTO `notificationtype` (`id`, `notificationType`) VALUES
 (1, 'Bid Chat'),
 (2, 'New Store'),
 (3, 'Item Reservation'),
-(4, 'Request Item'),
+(4, 'Item Request'),
 (5, 'Admin');
 
 -- --------------------------------------------------------
@@ -305,7 +447,7 @@ INSERT INTO `statustype` (`id`, `statusName`) VALUES
 (2, 'Inactive'),
 (3, 'Banned'),
 (4, 'Closed'),
-(5, 'Opened'),
+(5, 'Open'),
 (6, 'Pending'),
 (7, 'Received'),
 (8, 'Sending'),
@@ -315,7 +457,10 @@ INSERT INTO `statustype` (`id`, `statusName`) VALUES
 (12, 'Waiting'),
 (13, 'Verify'),
 (14, 'Reverify'),
-(15, 'Verifying');
+(15, 'Verifying'),
+(16, 'Accept'),
+(17, 'Decline'),
+(18, 'Delete');
 
 -- --------------------------------------------------------
 
@@ -341,7 +486,7 @@ CREATE TABLE `store` (
 
 INSERT INTO `store` (`id`, `accountId`, `storeName`, `storeInfo`, `storeAddress`, `storeRating`, `storeFollowers`, `storeVisited`, `storeStatus`) VALUES
 (37, 6, 'Ira Pyesa hanap', 'wala lang basta lang', 'kauswagan bongbongon', 0, 0, 0, 1),
-(51, 7, 'jsjsj', 'jsjsj', 'jsjsj', 0, 0, 0, 15);
+(51, 7, 'jsjsj', 'jsjsj', 'jsjsj', 0, 0, 0, 14);
 
 --
 -- Triggers `store`
@@ -387,6 +532,29 @@ CREATE TABLE `storefollowers` (
 CREATE TABLE `storeitem` (
   `storeId` int(11) NOT NULL,
   `itemId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `storeitem`
+--
+
+INSERT INTO `storeitem` (`storeId`, `itemId`) VALUES
+(37, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_chat_area`
+--
+
+CREATE TABLE `store_chat_area` (
+  `id` int(11) NOT NULL,
+  `recieverId` int(11) NOT NULL,
+  `senderId` int(11) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `datetime` datetime NOT NULL,
+  `messageType` int(11) NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -512,7 +680,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `username`, `password`, `userType`) VALUES
 (7, 'ianreyqaz', '123456', 'User'),
 (8, 'Admin', 'admin', 'User'),
-(11, 'SampleData', 'SampleData', 'User');
+(11, 'SampleData', 'SampleData', 'User'),
+(12, 'Demo', 'demo', 'User');
 
 -- --------------------------------------------------------
 
@@ -528,6 +697,7 @@ CREATE TABLE `user_account` (
   `contactNo` varchar(255) NOT NULL,
   `gender` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `zipCode` varchar(255) NOT NULL DEFAULT '0',
   `accountStatus` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -535,10 +705,11 @@ CREATE TABLE `user_account` (
 -- Dumping data for table `user_account`
 --
 
-INSERT INTO `user_account` (`id`, `userId`, `firstname`, `lastname`, `contactNo`, `gender`, `email`, `accountStatus`) VALUES
-(6, 7, 'Ianrey', 'Acampado', '09752662481', 'Male', 'ianreyinfinity@gmail.com', 1),
-(7, 8, 'Beta ', 'Test', '8888', 'Female', 'secret', 1),
-(26, 11, 'Ianrey', 'Acampado', '09752662481', 'male', 'email@gmail', 1);
+INSERT INTO `user_account` (`id`, `userId`, `firstname`, `lastname`, `contactNo`, `gender`, `email`, `zipCode`, `accountStatus`) VALUES
+(6, 7, 'Ianrey', 'Acampado', '09752662481', 'Male', 'ianreyinfinity@gmail.com', '9000', 1),
+(7, 8, 'Beta ', 'Test', '8888', 'Female', 'secret', '0', 1),
+(26, 11, 'Ianrey', 'Acampado', '09752662481', 'male', 'email@gmail', '9000', 1),
+(27, 12, 'Beta', 'Testing', '09752662481', 'Male', 'mai.com', '9000', 1);
 
 --
 -- Triggers `user_account`
@@ -569,24 +740,8 @@ CREATE TABLE `user_img` (
 INSERT INTO `user_img` (`id`, `parentId`, `filename`) VALUES
 (2, 6, '177405_IMG_20180521_093119.jpg'),
 (3, 7, '238247_2357d312-0096-44f0-b929-749ec0bc8a0e-1165095321.jpg'),
-(5, 6, 'null'),
-(6, 6, 'null'),
-(7, 6, 'null'),
-(8, 6, 'null'),
-(9, 6, 'null'),
-(10, 6, 'null'),
-(11, 6, 'null'),
-(12, 6, 'null'),
-(13, 6, 'null'),
-(14, 6, 'null'),
-(15, 6, 'null'),
-(16, 6, 'null'),
-(17, 6, 'null'),
-(18, 6, 'null'),
-(19, 6, 'null'),
-(20, 6, 'null'),
-(21, 6, 'null'),
-(22, 26, 'null');
+(22, 26, '555555_IMG_20180521_093119.jpg'),
+(23, 27, '666666_IMG_20180521_093119.jpg');
 
 -- --------------------------------------------------------
 
@@ -598,7 +753,7 @@ CREATE TABLE `user_notification` (
   `id` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `message` varchar(255) NOT NULL,
-  `dateRecieved` date NOT NULL,
+  `dateRecieved` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `notificationType` int(11) NOT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -608,27 +763,14 @@ CREATE TABLE `user_notification` (
 --
 
 INSERT INTO `user_notification` (`id`, `userId`, `message`, `dateRecieved`, `notificationType`, `status`) VALUES
-(4, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-02-07', 2, 9),
-(5, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-01', 2, 9),
-(6, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-03', 2, 9),
-(7, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-06', 2, 10),
-(8, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 10),
-(9, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 10),
-(10, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 10),
-(11, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 10),
-(12, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 10),
-(13, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 10),
-(14, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 10),
-(15, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 9),
-(16, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 9),
-(17, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 10),
-(18, 6, 'Congratulations! you can now Sell your Scap Things Using this App.', '2020-03-09', 2, 9),
-(20, 7, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-03-12', 2, 10),
-(21, 7, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-03-12', 2, 10),
-(22, 7, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-03-12', 2, 9),
-(23, 7, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-03-12', 2, 10),
-(24, 7, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-03-12', 2, 10),
-(25, 7, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-03-12', 2, 10);
+(4, 6, 'Congrastulations! you can now Sell your Scap Things Using this App.', '2020-02-07 00:00:00', 2, 9),
+(25, 7, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-03-12 00:00:00', 2, 10),
+(32, 7, 'this is admin men', '2019-08-08 00:00:00', 1, 9),
+(45, 26, 'Hey Somebody is looking for iahrud on your Location with a Budget of P600', '2020-06-23 00:00:00', 4, 9),
+(46, 26, 'Hey Somebody is looking for ianudud on your Location with a Budget of P600', '2020-06-23 00:00:00', 4, 10),
+(47, 26, 'Hey Somebody is looking for short on your Location with a Budget of P100', '2020-06-23 00:00:00', 4, 10),
+(48, 26, 'Hey Somebody is looking for laptop on your Location with a Budget of P2500', '2020-06-25 00:00:00', 4, 10),
+(49, 7, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-06-26 00:00:00', 2, 10);
 
 -- --------------------------------------------------------
 
@@ -652,9 +794,41 @@ CREATE TABLE `user_reports` (
 
 CREATE TABLE `zip_code` (
   `id` int(11) NOT NULL,
-  `province` varchar(255) NOT NULL,
-  `city` varchar(255) NOT NULL
+  `location` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `zip_code`
+--
+
+INSERT INTO `zip_code` (`id`, `location`) VALUES
+(0, 'None'),
+(9000, 'Cagayan de Oro City'),
+(9001, 'Tagoloan'),
+(9002, 'Villanueva'),
+(9003, 'Jasaan'),
+(9004, 'Claveria'),
+(9005, 'Balingasag'),
+(9006, 'Lagonglong'),
+(9007, 'Salay'),
+(9008, 'Binuangan'),
+(9009, 'Sugbongcogon'),
+(9010, 'Kinogitan'),
+(9011, 'Balinguan'),
+(9012, 'Talisayan'),
+(9013, 'Medina'),
+(9014, 'Gingoog City'),
+(9015, 'Magsaysay'),
+(9016, 'Opol'),
+(9017, 'El Salvador'),
+(9018, 'Alubijid'),
+(9019, 'Laguindingan'),
+(9020, 'Gitagum'),
+(9021, 'Libertad'),
+(9022, 'Initao'),
+(9023, 'Naawan'),
+(9024, 'Manticao'),
+(9025, 'Lugait');
 
 --
 -- Indexes for dumped tables
@@ -665,15 +839,50 @@ CREATE TABLE `zip_code` (
 --
 ALTER TABLE `bidders`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `bidsectionId` (`bidItemId`),
   ADD KEY `accountId` (`accountId`),
-  ADD KEY `bidsectionId` (`bidsectionId`);
+  ADD KEY `bidders_ibfk_4` (`suggestedItemId`),
+  ADD KEY `requestStatus` (`requestStatus`);
+
+--
+-- Indexes for table `bid_chat_area`
+--
+ALTER TABLE `bid_chat_area`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `status` (`status`),
+  ADD KEY `bidItemId` (`bidItemId`),
+  ADD KEY `bid_chat_area_ibfk_5` (`messageType`),
+  ADD KEY `bid_chat_area_ibfk_2` (`recieverId`),
+  ADD KEY `senderId` (`senderId`);
 
 --
 -- Indexes for table `bid_item`
 --
 ALTER TABLE `bid_item`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `accountId` (`accountId`);
+  ADD KEY `sendLoction` (`sendLocation`),
+  ADD KEY `bidItem` (`bidItem`);
+
+--
+-- Indexes for table `bid_item_detail`
+--
+ALTER TABLE `bid_item_detail`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `bid_item_img`
+--
+ALTER TABLE `bid_item_img`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `bid_item_img_ibfk_1` (`parentId`);
+
+--
+-- Indexes for table `bid_manager`
+--
+ALTER TABLE `bid_manager`
+  ADD KEY `ownerId` (`ownerId`),
+  ADD KEY `bidItemId` (`bidItemId`),
+  ADD KEY `bidStatus` (`bidStatus`);
 
 --
 -- Indexes for table `gio_address`
@@ -720,6 +929,12 @@ ALTER TABLE `item_reviews`
 -- Indexes for table `item_tags`
 --
 ALTER TABLE `item_tags`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `messagetype`
+--
+ALTER TABLE `messagetype`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -771,6 +986,16 @@ ALTER TABLE `storefollowers`
 ALTER TABLE `storeitem`
   ADD KEY `itemId` (`itemId`),
   ADD KEY `storeId` (`storeId`);
+
+--
+-- Indexes for table `store_chat_area`
+--
+ALTER TABLE `store_chat_area`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `recieverId` (`recieverId`),
+  ADD KEY `senderId` (`senderId`),
+  ADD KEY `status` (`status`),
+  ADD KEY `messageType` (`messageType`);
 
 --
 -- Indexes for table `store_img`
@@ -855,13 +1080,31 @@ ALTER TABLE `zip_code`
 -- AUTO_INCREMENT for table `bidders`
 --
 ALTER TABLE `bidders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `bid_chat_area`
+--
+ALTER TABLE `bid_chat_area`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `bid_item`
 --
 ALTER TABLE `bid_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `bid_item_detail`
+--
+ALTER TABLE `bid_item_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `bid_item_img`
+--
+ALTER TABLE `bid_item_img`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `gio_address`
@@ -873,7 +1116,7 @@ ALTER TABLE `gio_address`
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `item_category`
@@ -885,13 +1128,19 @@ ALTER TABLE `item_category`
 -- AUTO_INCREMENT for table `item_img`
 --
 ALTER TABLE `item_img`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `item_tags`
 --
 ALTER TABLE `item_tags`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT for table `messagetype`
+--
+ALTER TABLE `messagetype`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `notificationtype`
@@ -909,7 +1158,7 @@ ALTER TABLE `order`
 -- AUTO_INCREMENT for table `statustype`
 --
 ALTER TABLE `statustype`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `store`
@@ -921,6 +1170,12 @@ ALTER TABLE `store`
 -- AUTO_INCREMENT for table `storefollowers`
 --
 ALTER TABLE `storefollowers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `store_chat_area`
+--
+ALTER TABLE `store_chat_area`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -951,36 +1206,30 @@ ALTER TABLE `topup_percentage`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user_account`
 --
 ALTER TABLE `user_account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `user_img`
 --
 ALTER TABLE `user_img`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `user_notification`
 --
 ALTER TABLE `user_notification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `user_reports`
 --
 ALTER TABLE `user_reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `zip_code`
---
-ALTER TABLE `zip_code`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -991,7 +1240,41 @@ ALTER TABLE `zip_code`
 -- Constraints for table `bidders`
 --
 ALTER TABLE `bidders`
-  ADD CONSTRAINT `bidders_ibfk_2` FOREIGN KEY (`bidsectionId`) REFERENCES `bid_item` (`id`);
+  ADD CONSTRAINT `bidders_ibfk_2` FOREIGN KEY (`bidItemId`) REFERENCES `bid_item` (`id`),
+  ADD CONSTRAINT `bidders_ibfk_3` FOREIGN KEY (`accountId`) REFERENCES `user_account` (`id`),
+  ADD CONSTRAINT `bidders_ibfk_4` FOREIGN KEY (`suggestedItemId`) REFERENCES `bid_item_detail` (`id`),
+  ADD CONSTRAINT `bidders_ibfk_5` FOREIGN KEY (`requestStatus`) REFERENCES `statustype` (`id`);
+
+--
+-- Constraints for table `bid_chat_area`
+--
+ALTER TABLE `bid_chat_area`
+  ADD CONSTRAINT `bid_chat_area_ibfk_2` FOREIGN KEY (`recieverId`) REFERENCES `user_account` (`id`),
+  ADD CONSTRAINT `bid_chat_area_ibfk_3` FOREIGN KEY (`status`) REFERENCES `statustype` (`id`),
+  ADD CONSTRAINT `bid_chat_area_ibfk_4` FOREIGN KEY (`bidItemId`) REFERENCES `bid_item` (`id`),
+  ADD CONSTRAINT `bid_chat_area_ibfk_5` FOREIGN KEY (`messageType`) REFERENCES `messagetype` (`id`),
+  ADD CONSTRAINT `bid_chat_area_ibfk_6` FOREIGN KEY (`senderId`) REFERENCES `user_account` (`id`);
+
+--
+-- Constraints for table `bid_item`
+--
+ALTER TABLE `bid_item`
+  ADD CONSTRAINT `bid_item_ibfk_3` FOREIGN KEY (`sendLocation`) REFERENCES `zip_code` (`id`),
+  ADD CONSTRAINT `bid_item_ibfk_4` FOREIGN KEY (`bidItem`) REFERENCES `bid_item_detail` (`id`);
+
+--
+-- Constraints for table `bid_item_img`
+--
+ALTER TABLE `bid_item_img`
+  ADD CONSTRAINT `bid_item_img_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `bid_item_detail` (`id`);
+
+--
+-- Constraints for table `bid_manager`
+--
+ALTER TABLE `bid_manager`
+  ADD CONSTRAINT `bid_manager_ibfk_1` FOREIGN KEY (`ownerId`) REFERENCES `user_account` (`id`),
+  ADD CONSTRAINT `bid_manager_ibfk_2` FOREIGN KEY (`bidItemId`) REFERENCES `bid_item` (`id`),
+  ADD CONSTRAINT `bid_manager_ibfk_3` FOREIGN KEY (`bidStatus`) REFERENCES `statustype` (`id`);
 
 --
 -- Constraints for table `gio_address`
@@ -1056,6 +1339,15 @@ ALTER TABLE `storefollowers`
 ALTER TABLE `storeitem`
   ADD CONSTRAINT `storeitem_ibfk_1` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`),
   ADD CONSTRAINT `storeitem_ibfk_2` FOREIGN KEY (`storeId`) REFERENCES `store` (`id`);
+
+--
+-- Constraints for table `store_chat_area`
+--
+ALTER TABLE `store_chat_area`
+  ADD CONSTRAINT `store_chat_area_ibfk_1` FOREIGN KEY (`recieverId`) REFERENCES `store` (`id`),
+  ADD CONSTRAINT `store_chat_area_ibfk_2` FOREIGN KEY (`senderId`) REFERENCES `user_account` (`id`),
+  ADD CONSTRAINT `store_chat_area_ibfk_3` FOREIGN KEY (`status`) REFERENCES `statustype` (`id`),
+  ADD CONSTRAINT `store_chat_area_ibfk_4` FOREIGN KEY (`messageType`) REFERENCES `messagetype` (`id`);
 
 --
 -- Constraints for table `store_img`
