@@ -59,6 +59,11 @@ class AccountController extends CI_Controller {
         $result = $this->fetchData($table);
         $this->setOutput($result);
     }
+    //Zip_codes | Addresses
+    public function fetchAddress(){
+        $result = $this->ProcedureModel->getAddresses();
+        $this->setOutput($result);
+    }
 
     // public function ImageUpload(){
     //     $this->load->view('imageUpload');

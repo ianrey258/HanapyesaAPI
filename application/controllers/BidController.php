@@ -1,109 +1,111 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class StoreController extends CI_Controller{
+
+class BidController extends CI_Controller {
 
     function __construct(){
         parent::__construct();
     }
-    //Store
-    public function insertStore(){
-        $table = 'store';
+    //BidItem
+    public function insertBidItem(){
+        $table = 'bid_item';
         $result = $this->insertData($table);
         $this->setOutput($result);
     }
 
-    public function fetchStore(){
-        $table = 'store';
-        $result = $this->fetchData($table);
-        $this->setOutput($result);
-    }
-
-    public function getStores(){
+    public function fetchBidItems(){
         $data = $this->input->post();
-        $result = $this->ProcedureModel->getStores($data);
-        $this->setOutput($result);
-    }
-    //GioLocation
-    public function insertGioLocation(){
-        $table = 'gio_address';
-        $result = $this->insertData($table);
+        $result = $this->ProcedureModel->getBidItems($data);
         $this->setOutput($result);
     }
 
-    public function fetchGioLocation(){
-        $table = 'gio_address';
-        $result = $this->fetchData($table);
-        $this->setOutput($result);
-    }
-    //Item
-    public function insertItem(){
-        $table = 'item';
-        $result = $this->insertData($table);
-        $this->setOutput($result);
-    }
-
-    public function fetchItem(){
-        $table = 'item';
-        $result = $this->fetchData($table);
-        $this->setOutput($result);
-    }
-    //ItemRating
-    public function insertItemRating(){
-        $table = 'item_rating';
-        $result = $this->insertData($table);
-        $this->setOutput($result);
-    }
-
-    public function fetchItemRating(){
-        $table = 'item_rating';
+    public function fetchBidItem(){
+        $table = 'bid_item';
         $result = $this->fetchData($table);
         $this->setOutput($result);
     }
 
-    public function fetchStoreItemRating(){
+    public function getOtherBidItems(){
         $data = $this->input->post();
-        $result = $this->ProcedureModel->getStoreItemRate($data);
+        $result = $this->ProcedureModel->getOtherBidItems($data);
         $this->setOutput($result);
     }
-    //ItemReviews
-    public function insertItemReview(){
-        $table = 'item_reviews';
+    //BidItemDetail
+    public function insertBidItemDetail(){
+        $table = 'bid_item_detail';
         $result = $this->insertData($table);
         $this->setOutput($result);
     }
 
-    public function fetchItemReview(){
-        $table = 'item_reviews';
+    public function fetchBidItemDetail(){
+        $table = 'bid_item_detail';
         $result = $this->fetchData($table);
         $this->setOutput($result);
     }
 
-    public function fetchStoreItemReviews(){
+    public function getBidItemDetails(){
         $data = $this->input->post();
-        $result = $this->ProcedureModel->getStoreItemReviews($data);
+        $result = $this->ProcedureModel->getBidItemDetails($data);
         $this->setOutput($result);
     }
-    //StoreItem
-    public function insertStoreItem(){
-        $table = 'storeitem';
+
+    public function getOthersBidItemDetails(){
+        $data = $this->input->post();
+        $result = $this->ProcedureModel->getOthersBidItemDetails($data);
+        $this->setOutput($result);
+    }
+
+    public function getBiddersSuggestedItem(){
+        $data = $this->input->post();
+        $result = $this->ProcedureModel->getBiddersSuggestedItem($data);
+        $this->setOutput($result);
+    }
+    //BidItemManager
+    public function insertBidItemManager(){
+        $table = 'bid_manager';
         $result = $this->insertData($table);
         $this->setOutput($result);
     }
-    public function fetchStoreItem(){
+
+    public function fetchBidItemManager(){
+        $table = 'bid_manager';
+        $result = $this->fetchData($table);
+        $this->setOutput($result);
+    }
+    //Bidders
+    public function insertBidder(){
+        $table = 'bidders';
+        $result = $this->insertData($table);
+        $this->setOutput($result);
+    }
+
+    public function fetchBidder(){
+        $table = 'bidders';
+        $result = $this->fetchData($table);
+        $this->setOutput($result);
+    }
+
+    public function fetchBidders(){
         $data = $this->input->post();
-        $result = $this->ProcedureModel->getStoreItem($data);
+        $result = $this->ProcedureModel->getBidders($data);
         $this->setOutput($result);
     }
-    //Item Category
-    public function fetchCategory(){
-        $table = 'item_category';
+    //BidChatTable
+    public function insertBidChat(){
+        $table = 'bid_chat_area';
+        $result = $this->insertData($table);
+        $this->setOutput($result);
+    }
+
+    public function fetchBidChats(){
+        $table = 'bid_chat_area';
         $result = $this->fetchData($table);
         $this->setOutput($result);
     }
-    //Item Tags
-    public function fetchTags(){
-        $table = 'item_tags';
-        $result = $this->fetchData($table);
+    //getUsersbyLocation
+    public function fetchUsersbyLocation(){
+        $data = $this->input->post();
+        $result = $this->ProcedureModel->getUsersByLocation($data);
         $this->setOutput($result);
     }
     //Data crud Util
@@ -132,5 +134,4 @@ class StoreController extends CI_Controller{
                     ->set_content_type('application/json')
                     ->set_output(json_encode($request));
     }
-
 }

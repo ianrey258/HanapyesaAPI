@@ -84,6 +84,32 @@ class ImageController extends CI_Controller{
         $result =  $this->fecthImage($table);
         $this->setOutput($result);
     }
+    //BidImage
+    public function insertBidImage(){
+        $table = 'bid_item_img';
+        $path = './assets/ItemImage/';
+        $result =  $this->insertImage($table,$path);
+        $this->setOutput($result);
+    }
+
+    public function fetchBidImage(){
+        $table = 'bid_item_img';
+        $result =  $this->fecthImage($table);
+        $this->setOutput($result);
+    }
+
+    public function getBidItemImages(){
+        $data = $this->input->post();
+        $result =  $this->ProcedureModel->getBidItemImages($data);
+        $this->setOutput($result);
+    }
+
+    public function removeBidImage(){
+        $data = $this->input->post();
+        $path = './assets/ItemImage/';
+        $result = $this->TableModel->deleteData($data);
+        $this->deleteImage($data['filename'],$path);
+    }
 
     //Image Crud Functions
     private function insertImage($table,$path){
