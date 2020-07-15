@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 29, 2020 at 09:17 AM
+-- Generation Time: Jul 15, 2020 at 03:16 PM
 -- Server version: 10.1.40-MariaDB
 -- PHP Version: 7.1.29
 
@@ -45,7 +45,11 @@ INSERT INTO `bidders` (`id`, `bidItemId`, `accountId`, `suggestedItemId`, `reque
 (16, 21, 26, 26, 12),
 (17, 22, 26, 27, 12),
 (18, 23, 26, 28, 17),
-(19, 24, 26, 30, 16);
+(19, 24, 26, 30, 16),
+(20, 25, 6, 31, 12),
+(21, 25, 26, 31, 12),
+(22, 25, 27, 31, 12),
+(23, 25, 28, 32, 16);
 
 -- --------------------------------------------------------
 
@@ -63,6 +67,17 @@ CREATE TABLE `bid_chat_area` (
   `messageType` int(11) NOT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bid_chat_area`
+--
+
+INSERT INTO `bid_chat_area` (`id`, `bidItemId`, `recieverId`, `senderId`, `message`, `datetime`, `messageType`, `status`) VALUES
+(1, 25, 29, 28, 'hii', '2020-07-02 05:54:08', 1, 9),
+(2, 25, 29, 28, 'hello', '2020-07-02 06:22:44', 1, 9),
+(5, 25, 29, 28, 'paliton na nimo maam?', '2020-07-02 07:27:50', 1, 9),
+(6, 25, 29, 28, 'uhmm', '2020-07-02 08:07:34', 1, 9),
+(7, 25, 28, 29, 'nah wala paman koi budget', '2020-07-02 08:16:00', 1, 9);
 
 -- --------------------------------------------------------
 
@@ -85,7 +100,8 @@ INSERT INTO `bid_item` (`id`, `bidItem`, `datetime`, `sendLocation`) VALUES
 (21, 26, '2020-06-23', 9000),
 (22, 27, '2020-06-23', 9000),
 (23, 28, '2020-06-23', 9000),
-(24, 29, '2020-06-25', 9000);
+(24, 29, '2020-06-25', 9000),
+(25, 31, '2020-06-30', 9000);
 
 -- --------------------------------------------------------
 
@@ -109,7 +125,9 @@ INSERT INTO `bid_item_detail` (`id`, `itemName`, `itemPriceorBudget`, `descripti
 (27, 'ianudud', '600', 'hdhx'),
 (28, 'short', '100', 'bahalag 2nd hand'),
 (29, 'Laptop', '2500', 'Bahalag 2nd hand'),
-(30, 'Asus laptop - 9800', '2000', '1 year used');
+(30, 'Asus laptop - 9800', '2000', '1 year used'),
+(31, 'Video Card ddr2', '1500', 'Bahalag 2nd hand lang'),
+(32, 'HD 4560 DDR2', '1700', '2 year used');
 
 -- --------------------------------------------------------
 
@@ -129,7 +147,10 @@ CREATE TABLE `bid_item_img` (
 
 INSERT INTO `bid_item_img` (`id`, `parentId`, `filename`) VALUES
 (2, 29, '527602_IMG_20200218_140238.jpg'),
-(3, 29, '291386_IMG_20200218_140238.jpg');
+(3, 29, '291386_IMG_20200218_140238.jpg'),
+(20, 32, '363447_image_picker570757053708434023jpg'),
+(21, 32, '214927_image_picker9048434183585970873jpg'),
+(22, 32, '782652_image_picker3345461957208004553jpg');
 
 -- --------------------------------------------------------
 
@@ -151,7 +172,8 @@ INSERT INTO `bid_manager` (`ownerId`, `bidItemId`, `bidStatus`) VALUES
 (6, 21, 5),
 (6, 22, 5),
 (6, 23, 5),
-(6, 24, 5);
+(6, 24, 5),
+(29, 25, 5);
 
 -- --------------------------------------------------------
 
@@ -172,7 +194,8 @@ CREATE TABLE `gio_address` (
 
 INSERT INTO `gio_address` (`id`, `storeId`, `longitude`, `latitude`) VALUES
 (1, 37, '124.6318254', '8.505401'),
-(15, 51, '0', '0');
+(15, 51, '0', '0'),
+(16, 52, '0', '0');
 
 -- --------------------------------------------------------
 
@@ -197,7 +220,10 @@ CREATE TABLE `item` (
 --
 
 INSERT INTO `item` (`id`, `itemName`, `itemPrice`, `itemDescription`, `itemStack`, `itemRating`, `tagId`, `categoryId`, `topupId`) VALUES
-(1, 'Laptop (Asus)', '2500', 'Brand New', '5', 0, 1, 5, 1);
+(1, 'Laptop (Asus)', '2500', 'Brand New', '5', 0, 1, 5, 1),
+(3, 'Nokia', '250', 'Guba', '1', 0, 31, 4, 1),
+(4, 'Huwaei', '200', 'Basin ma gamit pa ang party', '1', 0, 31, 4, 1),
+(5, 'Cherry Mobile Defect', '500', 'Screen and power button ra ang daot', '1', 0, 31, 4, 1);
 
 --
 -- Triggers `item`
@@ -259,7 +285,12 @@ CREATE TABLE `item_img` (
 --
 
 INSERT INTO `item_img` (`id`, `parentId`, `filename`) VALUES
-(1, 1, '353486_IMG_20200218_140238.jpg');
+(1, 1, '353486_IMG_20200218_140238.jpg'),
+(2, 4, '458457_image_picker8239029994669442782jpg'),
+(3, 4, '419173_image_picker4525341496289380278jpg'),
+(4, 5, '828251_image_picker4606848348438797146jpg'),
+(5, 5, '980764_image_picker6353613269930986081jpg'),
+(6, 5, '569307_image_picker2615149628130472795jpg');
 
 -- --------------------------------------------------------
 
@@ -281,7 +312,10 @@ CREATE TABLE `item_rating` (
 --
 
 INSERT INTO `item_rating` (`itemId`, `star5`, `star4`, `star3`, `star2`, `star1`) VALUES
-(1, 0, 0, 0, 0, 0);
+(1, 0, 0, 0, 0, 0),
+(3, 0, 0, 0, 0, 0),
+(4, 0, 0, 0, 0, 0),
+(5, 0, 0, 0, 0, 0);
 
 --
 -- Triggers `item_rating`
@@ -486,7 +520,8 @@ CREATE TABLE `store` (
 
 INSERT INTO `store` (`id`, `accountId`, `storeName`, `storeInfo`, `storeAddress`, `storeRating`, `storeFollowers`, `storeVisited`, `storeStatus`) VALUES
 (37, 6, 'Ira Pyesa hanap', 'wala lang basta lang', 'kauswagan bongbongon', 0, 0, 0, 1),
-(51, 7, 'jsjsj', 'jsjsj', 'jsjsj', 0, 0, 0, 14);
+(51, 7, 'jsjsj', 'jsjsj', 'jsjsj', 0, 0, 0, 14),
+(52, 28, 'Crack Gadget shop', 'All Brand of Damage Phones', 'Kuaswagan. Sta Theressa st.', 0, 0, 0, 1);
 
 --
 -- Triggers `store`
@@ -539,7 +574,9 @@ CREATE TABLE `storeitem` (
 --
 
 INSERT INTO `storeitem` (`storeId`, `itemId`) VALUES
-(37, 1);
+(37, 1),
+(52, 4),
+(52, 5);
 
 -- --------------------------------------------------------
 
@@ -575,7 +612,10 @@ CREATE TABLE `store_img` (
 
 INSERT INTO `store_img` (`id`, `parentId`, `filename`) VALUES
 (58, 37, '7583117_FB_IMG_1567424090399.jpg'),
-(59, 37, '6861960_FB_IMG_1567424104552.jpg');
+(59, 37, '6861960_FB_IMG_1567424104552.jpg'),
+(60, 52, '5618476_image_picker2907719304816316400jpg'),
+(61, 52, '3661031_image_picker846583868504671173jpg'),
+(62, 52, '4537621_image_picker5503503791708227255jpg');
 
 -- --------------------------------------------------------
 
@@ -609,8 +649,9 @@ CREATE TABLE `store_veriification_img` (
 --
 
 INSERT INTO `store_veriification_img` (`id`, `parentId`, `filename`) VALUES
-(18, 51, '94274_FB_IMG_1567424104552.jpg'),
-(32, 51, '94274_FB_IMG_1567424104552.jpg');
+(18, 52, '241008_image_picker1817258858295805527jpg'),
+(32, 52, '241008_image_picker1817258858295805527jpg'),
+(33, 52, '241008_image_picker1817258858295805527jpg');
 
 --
 -- Triggers `store_veriification_img`
@@ -681,7 +722,9 @@ INSERT INTO `user` (`id`, `username`, `password`, `userType`) VALUES
 (7, 'ianreyqaz', '123456', 'User'),
 (8, 'Admin', 'admin', 'User'),
 (11, 'SampleData', 'SampleData', 'User'),
-(12, 'Demo', 'demo', 'User');
+(12, 'Demo', 'demo', 'User'),
+(13, 'User1', '123456', 'User'),
+(14, 'User2', '123456', 'User');
 
 -- --------------------------------------------------------
 
@@ -709,7 +752,9 @@ INSERT INTO `user_account` (`id`, `userId`, `firstname`, `lastname`, `contactNo`
 (6, 7, 'Ianrey', 'Acampado', '09752662481', 'Male', 'ianreyinfinity@gmail.com', '9000', 1),
 (7, 8, 'Beta ', 'Test', '8888', 'Female', 'secret', '0', 1),
 (26, 11, 'Ianrey', 'Acampado', '09752662481', 'male', 'email@gmail', '9000', 1),
-(27, 12, 'Beta', 'Testing', '09752662481', 'Male', 'mai.com', '9000', 1);
+(27, 12, 'Beta', 'Testing', '09752662481', 'Male', 'mai.com', '9000', 1),
+(28, 13, 'User1', 'User1demo', '09752662481', 'Male', 'ianrey@gmail.com', '9000', 1),
+(29, 14, 'User2', 'Demo', '09359002344', 'Male', 'user2@gmail.com', '0', 1);
 
 --
 -- Triggers `user_account`
@@ -738,10 +783,12 @@ CREATE TABLE `user_img` (
 --
 
 INSERT INTO `user_img` (`id`, `parentId`, `filename`) VALUES
-(2, 6, '177405_IMG_20180521_093119.jpg'),
-(3, 7, '238247_2357d312-0096-44f0-b929-749ec0bc8a0e-1165095321.jpg'),
+(2, 6, '123321_IMG_20180521_093119.jpg'),
+(3, 7, '238247_2357d312-0096-44f0-b929-749ec0bc8a0e-1165095321'),
 (22, 26, '555555_IMG_20180521_093119.jpg'),
-(23, 27, '666666_IMG_20180521_093119.jpg');
+(23, 27, '666666_IMG_20180521_093119.jpg'),
+(24, 28, '583488_image_picker342058442961718523jpg'),
+(25, 29, 'null');
 
 -- --------------------------------------------------------
 
@@ -770,7 +817,13 @@ INSERT INTO `user_notification` (`id`, `userId`, `message`, `dateRecieved`, `not
 (46, 26, 'Hey Somebody is looking for ianudud on your Location with a Budget of P600', '2020-06-23 00:00:00', 4, 10),
 (47, 26, 'Hey Somebody is looking for short on your Location with a Budget of P100', '2020-06-23 00:00:00', 4, 10),
 (48, 26, 'Hey Somebody is looking for laptop on your Location with a Budget of P2500', '2020-06-25 00:00:00', 4, 10),
-(49, 7, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-06-26 00:00:00', 2, 10);
+(49, 7, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-06-26 00:00:00', 2, 10),
+(50, 28, 'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!', '2020-06-29 00:00:00', 2, 10),
+(51, 28, 'Congratulations! you can now Sell your Scap Things Using this App.', '2020-06-29 00:00:00', 2, 9),
+(52, 6, 'Hey Somebody is looking for Video Card ddr2 on your Location with a Budget of P1500', '2020-06-30 00:00:00', 4, 10),
+(53, 26, 'Hey Somebody is looking for Video Card ddr2 on your Location with a Budget of P1500', '2020-06-30 00:00:00', 4, 10),
+(54, 28, 'Hey Somebody is looking for Video Card ddr2 on your Location with a Budget of P1500', '2020-06-30 00:00:00', 4, 9),
+(55, 27, 'Hey Somebody is looking for Video Card ddr2 on your Location with a Budget of P1500', '2020-06-30 00:00:00', 4, 10);
 
 -- --------------------------------------------------------
 
@@ -1080,43 +1133,43 @@ ALTER TABLE `zip_code`
 -- AUTO_INCREMENT for table `bidders`
 --
 ALTER TABLE `bidders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `bid_chat_area`
 --
 ALTER TABLE `bid_chat_area`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `bid_item`
 --
 ALTER TABLE `bid_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `bid_item_detail`
 --
 ALTER TABLE `bid_item_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `bid_item_img`
 --
 ALTER TABLE `bid_item_img`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `gio_address`
 --
 ALTER TABLE `gio_address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `item_category`
@@ -1128,7 +1181,7 @@ ALTER TABLE `item_category`
 -- AUTO_INCREMENT for table `item_img`
 --
 ALTER TABLE `item_img`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `item_tags`
@@ -1164,7 +1217,7 @@ ALTER TABLE `statustype`
 -- AUTO_INCREMENT for table `store`
 --
 ALTER TABLE `store`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `storefollowers`
@@ -1182,13 +1235,13 @@ ALTER TABLE `store_chat_area`
 -- AUTO_INCREMENT for table `store_img`
 --
 ALTER TABLE `store_img`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `store_veriification_img`
 --
 ALTER TABLE `store_veriification_img`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `tax_percentage`
@@ -1206,25 +1259,25 @@ ALTER TABLE `topup_percentage`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `user_account`
 --
 ALTER TABLE `user_account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `user_img`
 --
 ALTER TABLE `user_img`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `user_notification`
 --
 ALTER TABLE `user_notification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `user_reports`

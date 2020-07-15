@@ -102,6 +102,12 @@ class BidController extends CI_Controller {
         $result = $this->fetchData($table);
         $this->setOutput($result);
     }
+
+    public function getBidChat(){
+        $data = $this->input->post();
+        $result = $this->ProcedureModel->getBidChat($data);
+        $this->setOutput($result);
+    }
     //getUsersbyLocation
     public function fetchUsersbyLocation(){
         $data = $this->input->post();

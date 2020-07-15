@@ -23,8 +23,8 @@ class ImageModel extends CI_Model{
 
     public function updateImage($table,$data){
         $fdata = array('parentId' => $data['parentId'],'filename' => $data['filename']);
-        $this->db->update($table,$fdata);
         $this->db->where('id',$data['id']);
+        $this->db->update($table,$fdata);
         return $this->searchImage($table,$fdata);
     }
 }

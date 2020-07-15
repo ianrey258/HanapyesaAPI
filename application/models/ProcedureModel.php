@@ -57,4 +57,8 @@ class ProcedureModel extends CI_Model{
     public function getStores($data){
         return $this->db->query('call getStores(?)',$data)->result();
     }
+
+    public function getBidChat($data){
+        return $this->db->query('call getBidChat(?,?,?)',$data)->result();
+    }
 }
