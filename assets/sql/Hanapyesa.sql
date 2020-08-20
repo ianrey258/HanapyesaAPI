@@ -322,7 +322,7 @@ INSERT INTO `item_rating` (`itemId`, `star5`, `star4`, `star3`, `star2`, `star1`
 --
 DELIMITER $$
 CREATE TRIGGER `updateItemRating` AFTER UPDATE ON `item_rating` FOR EACH ROW BEGIN 
-UPDATE item SET itemRating = Round(((new.5_Star*5 + new.4_Star*4 + new.3_Star*3 + new.2_Star*2 + new.1_Star*1)/(new.5_Star+new.4_Star+new.3_Star+new.2_Star+new.1_Star)),1) WHERE id = new.itemId;
+UPDATE item SET itemRating = Round(((new.star5*5 + new.star4*4 + new.star3*3 + new.star2*2 + new.star1*1)/(new.star5+new.star4+new.star3+new.star2+new.star1)),1) WHERE id = new.itemId;
 END
 $$
 DELIMITER ;
