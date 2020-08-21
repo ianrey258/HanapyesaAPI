@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+- phpMyAdmin XML Dump
+- version 5.0.2
+- https://www.phpmyadmin.net
+-
+- Host: 127.0.0.1
+- Generation Time: Aug 21, 2020 at 02:04 PM
+- Server version: 10.1.40-MariaDB
+- PHP Version: 7.1.29
+-->
+
+<pma_xml_export version="1.0" xmlns:pma="https://www.phpmyadmin.net/some_doc_url/">
+    <!--
+    - Structure schemas
+    -->
+    <pma:structure_schemas>
+        <pma:database name="hanapyesa" collation="latin1_swedish_ci" charset="latin1">
+            <pma:table name="bidders">
+                CREATE TABLE `bidders` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `bidItemId` int(11) NOT NULL,
+                  `accountId` int(11) NOT NULL,
+                  `suggestedItemId` int(11) DEFAULT NULL,
+                  `requestStatus` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `bidsectionId` (`bidItemId`),
+                  KEY `accountId` (`accountId`),
+                  KEY `bidders_ibfk_4` (`suggestedItemId`),
+                  KEY `requestStatus` (`requestStatus`),
+                  CONSTRAINT `bidders_ibfk_2` FOREIGN KEY (`bidItemId`) REFERENCES `bid_item` (`id`),
+                  CONSTRAINT `bidders_ibfk_3` FOREIGN KEY (`accountId`) REFERENCES `user_account` (`id`),
+                  CONSTRAINT `bidders_ibfk_4` FOREIGN KEY (`suggestedItemId`) REFERENCES `bid_item_detail` (`id`),
+                  CONSTRAINT `bidders_ibfk_5` FOREIGN KEY (`requestStatus`) REFERENCES `statustype` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="bid_chat_area">
+                CREATE TABLE `bid_chat_area` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `bidItemId` int(11) NOT NULL,
+                  `recieverId` int(11) NOT NULL,
+                  `senderId` int(11) NOT NULL,
+                  `message` varchar(255) NOT NULL,
+                  `datetime` datetime NOT NULL,
+                  `messageType` int(11) NOT NULL,
+                  `status` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `status` (`status`),
+                  KEY `bidItemId` (`bidItemId`),
+                  KEY `bid_chat_area_ibfk_5` (`messageType`),
+                  KEY `bid_chat_area_ibfk_2` (`recieverId`),
+                  KEY `senderId` (`senderId`),
+                  CONSTRAINT `bid_chat_area_ibfk_2` FOREIGN KEY (`recieverId`) REFERENCES `user_account` (`id`),
+                  CONSTRAINT `bid_chat_area_ibfk_3` FOREIGN KEY (`status`) REFERENCES `statustype` (`id`),
+                  CONSTRAINT `bid_chat_area_ibfk_4` FOREIGN KEY (`bidItemId`) REFERENCES `bid_item` (`id`),
+                  CONSTRAINT `bid_chat_area_ibfk_5` FOREIGN KEY (`messageType`) REFERENCES `messagetype` (`id`),
+                  CONSTRAINT `bid_chat_area_ibfk_6` FOREIGN KEY (`senderId`) REFERENCES `user_account` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="bid_item">
+                CREATE TABLE `bid_item` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `bidItem` int(11) NOT NULL,
+                  `datetime` date NOT NULL,
+                  `sendLocation` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `sendLoction` (`sendLocation`),
+                  KEY `bidItem` (`bidItem`),
+                  CONSTRAINT `bid_item_ibfk_3` FOREIGN KEY (`sendLocation`) REFERENCES `zip_code` (`id`),
+                  CONSTRAINT `bid_item_ibfk_4` FOREIGN KEY (`bidItem`) REFERENCES `bid_item_detail` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="bid_item_detail">
+                CREATE TABLE `bid_item_detail` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `itemName` varchar(255) NOT NULL,
+                  `itemPriceorBudget` varchar(255) NOT NULL,
+                  `description` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="bid_item_img">
+                CREATE TABLE `bid_item_img` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `parentId` int(11) NOT NULL,
+                  `filename` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `bid_item_img_ibfk_1` (`parentId`),
+                  CONSTRAINT `bid_item_img_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `bid_item_detail` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="bid_manager">
+                CREATE TABLE `bid_manager` (
+                  `ownerId` int(11) NOT NULL,
+                  `bidItemId` int(11) NOT NULL,
+                  `bidStatus` int(11) NOT NULL,
+                  KEY `ownerId` (`ownerId`),
+                  KEY `bidItemId` (`bidItemId`),
+                  KEY `bidStatus` (`bidStatus`),
+                  CONSTRAINT `bid_manager_ibfk_1` FOREIGN KEY (`ownerId`) REFERENCES `user_account` (`id`),
+                  CONSTRAINT `bid_manager_ibfk_2` FOREIGN KEY (`bidItemId`) REFERENCES `bid_item` (`id`),
+                  CONSTRAINT `bid_manager_ibfk_3` FOREIGN KEY (`bidStatus`) REFERENCES `statustype` (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="gio_address">
+                CREATE TABLE `gio_address` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `storeId` int(11) NOT NULL,
+                  `longitude` varchar(255) NOT NULL,
+                  `latitude` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `storeId` (`storeId`),
+                  CONSTRAINT `gio_address_ibfk_1` FOREIGN KEY (`storeId`) REFERENCES `store` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="item">
+                CREATE TABLE `item` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `itemName` varchar(255) NOT NULL,
+                  `itemPrice` varchar(255) NOT NULL,
+                  `itemDescription` varchar(255) NOT NULL,
+                  `itemStack` varchar(255) NOT NULL,
+                  `itemRating` double NOT NULL,
+                  `tagId` int(11) NOT NULL,
+                  `categoryId` int(11) NOT NULL,
+                  `topupId` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `categoryId` (`categoryId`),
+                  KEY `tagId` (`tagId`),
+                  KEY `topupId` (`topupId`),
+                  CONSTRAINT `item_ibfk_1` FOREIGN KEY (`categoryId`) REFERENCES `item_category` (`id`),
+                  CONSTRAINT `item_ibfk_2` FOREIGN KEY (`tagId`) REFERENCES `item_tags` (`id`),
+                  CONSTRAINT `item_ibfk_3` FOREIGN KEY (`topupId`) REFERENCES `topup_percentage` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:trigger name="deleteOtherConstraints">
+                CREATE TRIGGER `deleteOtherConstraints` BEFORE DELETE ON `item`
+                 FOR EACH ROW BEGIN
+                 DELETE FROM `item_img` WHERE parentId = old.id;
+                 DELETE FROM `item_reviews` WHERE itemId = old.id;
+                 DELETE FROM `item_rating` WHERE itemId = old.id;
+                 DELETE FROM `storeitem` WHERE itemId = old.id;
+                END
+            </pma:trigger>
+            <pma:trigger name="makedefaultRating">
+                CREATE TRIGGER `makedefaultRating` AFTER INSERT ON `item`
+                 FOR EACH ROW BEGIN
+                INSERT INTO item_rating VALUES (new.id,'0','0','0','0','0');
+                END
+            </pma:trigger>
+            <pma:table name="item_category">
+                CREATE TABLE `item_category` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `categoryName` varchar(100) NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="item_img">
+                CREATE TABLE `item_img` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `parentId` int(11) NOT NULL,
+                  `filename` varchar(100) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `parentId` (`parentId`),
+                  CONSTRAINT `item_img_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `item` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="item_rating">
+                CREATE TABLE `item_rating` (
+                  `itemId` int(11) NOT NULL,
+                  `star5` int(11) NOT NULL DEFAULT '0',
+                  `star4` int(11) NOT NULL DEFAULT '0',
+                  `star3` int(11) NOT NULL DEFAULT '0',
+                  `star2` int(11) NOT NULL DEFAULT '0',
+                  `star1` int(11) NOT NULL DEFAULT '0',
+                  PRIMARY KEY (`itemId`),
+                  CONSTRAINT `item_rating_ibfk_1` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:trigger name="updateItemRating">
+                CREATE TRIGGER `updateItemRating` AFTER UPDATE ON `item_rating`
+                 FOR EACH ROW BEGIN 
+                UPDATE item SET itemRating = Round(((new.star5*5 + new.star4*4 + new.star3*3 + new.star2*2 + new.star1*1)/(new.star5+new.star4+new.star3+new.star2+new.star1)),1) WHERE id = new.itemId;
+                END
+            </pma:trigger>
+            <pma:table name="item_reviews">
+                CREATE TABLE `item_reviews` (
+                  `itemId` int(11) NOT NULL,
+                  `useraccountId` int(11) NOT NULL,
+                  `comment` varchar(255) NOT NULL,
+                  KEY `itemId` (`itemId`),
+                  CONSTRAINT `item_reviews_ibfk_1` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="item_tags">
+                CREATE TABLE `item_tags` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `tagName` varchar(100) NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="messagetype">
+                CREATE TABLE `messagetype` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `messageType` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="notificationtype">
+                CREATE TABLE `notificationtype` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `notificationType` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="order">
+                CREATE TABLE `order` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `customerId` int(11) NOT NULL,
+                  `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  `orderStatus` int(11) NOT NULL,
+                  `taxId` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `customerId` (`customerId`),
+                  KEY `taxId` (`taxId`),
+                  CONSTRAINT `order_ibfk_2` FOREIGN KEY (`taxId`) REFERENCES `tax_percentage` (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="order_list">
+                CREATE TABLE `order_list` (
+                  `orderId` int(11) NOT NULL,
+                  `itemId` int(11) NOT NULL,
+                  `orderQty` int(11) NOT NULL,
+                  KEY `itemId` (`itemId`),
+                  KEY `orderId` (`orderId`),
+                  CONSTRAINT `order_list_ibfk_1` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`),
+                  CONSTRAINT `order_list_ibfk_2` FOREIGN KEY (`orderId`) REFERENCES `order` (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="statustype">
+                CREATE TABLE `statustype` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `statusName` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="store">
+                CREATE TABLE `store` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `accountId` int(11) NOT NULL,
+                  `storeName` varchar(255) NOT NULL,
+                  `storeInfo` varchar(255) NOT NULL,
+                  `storeAddress` varchar(255) NOT NULL,
+                  `storeRating` double NOT NULL DEFAULT '0',
+                  `storeFollowers` int(11) NOT NULL DEFAULT '0',
+                  `storeVisited` int(11) NOT NULL DEFAULT '0',
+                  `storeStatus` int(11) NOT NULL DEFAULT '0',
+                  PRIMARY KEY (`id`),
+                  KEY `accountId` (`accountId`),
+                  KEY `storeStatus` (`storeStatus`),
+                  CONSTRAINT `store_ibfk_2` FOREIGN KEY (`storeStatus`) REFERENCES `statustype` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:trigger name="NotifyUserStore">
+                CREATE TRIGGER `NotifyUserStore` AFTER UPDATE ON `store`
+                 FOR EACH ROW BEGIN
+                 IF old.storeStatus  = '15' AND new.storeStatus  = '1' THEN
+                	INSERT INTO user_notification VALUES (null,new.accountId,'Congratulations! you can now Sell your Scap Things Using this App.',CURRENT_DATE,'2','10');
+                    
+                 ELSEIF old.storeStatus = '15' AND new.storeStatus = '14' THEN
+                    INSERT INTO user_notification VALUES (null,new.accountId,'Sorry you cant manage your store yet due to your verification Image. Please check your Email Thank you!',CURRENT_DATE,'2','10');
+                 END IF;
+                
+                END
+            </pma:trigger>
+            <pma:trigger name="createVerificationAndLocation">
+                CREATE TRIGGER `createVerificationAndLocation` AFTER INSERT ON `store`
+                 FOR EACH ROW BEGIN
+                 INSERT INTO store_veriification_img VALUES (null,new.id,'null');
+                 INSERT INTO gio_address VALUES (null,new.id,'0','0');
+                END
+            </pma:trigger>
+            <pma:table name="storefollowers">
+                CREATE TABLE `storefollowers` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `storeId` int(11) NOT NULL,
+                  `accountId` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `accountId` (`accountId`),
+                  KEY `storeId` (`storeId`),
+                  CONSTRAINT `storefollowers_ibfk_2` FOREIGN KEY (`storeId`) REFERENCES `store` (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="storeitem">
+                CREATE TABLE `storeitem` (
+                  `storeId` int(11) NOT NULL,
+                  `itemId` int(11) NOT NULL,
+                  KEY `itemId` (`itemId`),
+                  KEY `storeId` (`storeId`),
+                  CONSTRAINT `storeitem_ibfk_1` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`),
+                  CONSTRAINT `storeitem_ibfk_2` FOREIGN KEY (`storeId`) REFERENCES `store` (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="store_chat_area">
+                CREATE TABLE `store_chat_area` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `recieverId` int(11) NOT NULL,
+                  `senderId` int(11) NOT NULL,
+                  `message` varchar(255) NOT NULL,
+                  `datetime` datetime NOT NULL,
+                  `messageType` int(11) NOT NULL,
+                  `status` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `recieverId` (`recieverId`),
+                  KEY `senderId` (`senderId`),
+                  KEY `status` (`status`),
+                  KEY `messageType` (`messageType`),
+                  CONSTRAINT `store_chat_area_ibfk_1` FOREIGN KEY (`recieverId`) REFERENCES `store` (`id`),
+                  CONSTRAINT `store_chat_area_ibfk_2` FOREIGN KEY (`senderId`) REFERENCES `user_account` (`id`),
+                  CONSTRAINT `store_chat_area_ibfk_3` FOREIGN KEY (`status`) REFERENCES `statustype` (`id`),
+                  CONSTRAINT `store_chat_area_ibfk_4` FOREIGN KEY (`messageType`) REFERENCES `messagetype` (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="store_img">
+                CREATE TABLE `store_img` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `parentId` int(11) NOT NULL,
+                  `filename` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `storeId` (`parentId`),
+                  CONSTRAINT `store_img_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `store` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="store_rating">
+                CREATE TABLE `store_rating` (
+                  `storeId` int(11) NOT NULL,
+                  `star5` int(11) NOT NULL DEFAULT '0',
+                  `star4` int(11) NOT NULL DEFAULT '0',
+                  `star3` int(11) NOT NULL DEFAULT '0',
+                  `star2` int(11) NOT NULL DEFAULT '0',
+                  `star1` int(11) NOT NULL DEFAULT '0',
+                  KEY `storeId` (`storeId`),
+                  CONSTRAINT `store_rating_ibfk_1` FOREIGN KEY (`storeId`) REFERENCES `store` (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="store_veriification_img">
+                CREATE TABLE `store_veriification_img` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `parentId` int(11) NOT NULL,
+                  `filename` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `storeId` (`parentId`),
+                  CONSTRAINT `store_veriification_img_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `store` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:trigger name="updateStoreStatus">
+                CREATE TRIGGER `updateStoreStatus` AFTER UPDATE ON `store_veriification_img`
+                 FOR EACH ROW BEGIN
+                	UPDATE store SET storeStatus='15' WHERE id=new.parentId;
+                END
+            </pma:trigger>
+            <pma:table name="tax_percentage">
+                CREATE TABLE `tax_percentage` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `taxPercentage` int(11) NOT NULL,
+                  `effectivityDate` date NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="topup_percentage">
+                CREATE TABLE `topup_percentage` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `topupPercentage` int(11) NOT NULL,
+                  `effectivityDate` date NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="user">
+                CREATE TABLE `user` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `username` varchar(255) NOT NULL,
+                  `password` varchar(255) NOT NULL,
+                  `userType` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="user_account">
+                CREATE TABLE `user_account` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `userId` int(11) NOT NULL,
+                  `firstname` varchar(255) NOT NULL,
+                  `lastname` varchar(255) NOT NULL,
+                  `contactNo` varchar(255) NOT NULL,
+                  `gender` varchar(255) NOT NULL,
+                  `email` varchar(255) NOT NULL,
+                  `zipCode` varchar(255) NOT NULL DEFAULT '0',
+                  `accountStatus` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `accountStatus` (`accountStatus`),
+                  KEY `userId` (`userId`),
+                  CONSTRAINT `user_account_ibfk_1` FOREIGN KEY (`accountStatus`) REFERENCES `statustype` (`id`),
+                  CONSTRAINT `user_account_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:trigger name="Create_NullFilename">
+                CREATE TRIGGER `Create_NullFilename` AFTER INSERT ON `user_account`
+                 FOR EACH ROW BEGIN
+                INSERT INTO user_img VALUES (null,new.id,'null');
+                END
+            </pma:trigger>
+            <pma:table name="user_img">
+                CREATE TABLE `user_img` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `parentId` int(11) NOT NULL,
+                  `filename` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `accountId` (`parentId`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="user_notification">
+                CREATE TABLE `user_notification` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `userId` int(11) NOT NULL,
+                  `message` varchar(255) NOT NULL,
+                  `dateRecieved` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  `notificationType` int(11) NOT NULL,
+                  `status` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `status` (`status`),
+                  KEY `notificationType` (`notificationType`),
+                  KEY `userId` (`userId`),
+                  CONSTRAINT `user_notification_ibfk_1` FOREIGN KEY (`status`) REFERENCES `statustype` (`id`),
+                  CONSTRAINT `user_notification_ibfk_2` FOREIGN KEY (`notificationType`) REFERENCES `notificationtype` (`id`),
+                  CONSTRAINT `user_notification_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `user_account` (`id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="user_reports">
+                CREATE TABLE `user_reports` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `userAccountId` int(11) NOT NULL,
+                  `message` varchar(255) NOT NULL,
+                  `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  `reportStatus` int(11) NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `userId` (`userAccountId`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:table name="zip_code">
+                CREATE TABLE `zip_code` (
+                  `id` int(11) NOT NULL,
+                  `location` varchar(255) NOT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            </pma:table>
+            <pma:procedure name="getAddresses">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getAddresses`()
+                    NO SQL
+                BEGIN
+                SELECT * FROM zip_code order BY zip_code.location ASC;
+                END
+            </pma:procedure>
+            <pma:procedure name="getBidChat">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getBidChat`(IN `bidId` INT, IN `user1Id` INT, IN `user2Id` INT)
+                    NO SQL
+                BEGIN
+                SELECT * FROM `bid_chat_area` WHERE `senderId` = user1Id OR `senderId` = user2Id AND `recieverId` = user1Id OR `recieverId` = user2Id AND `bidItemId` = bidId;
+                END
+            </pma:procedure>
+            <pma:procedure name="getBidders">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getBidders`(IN `ownerId` INT)
+                    NO SQL
+                BEGIN
+                SELECT * FROM bidders WHERE bidders.bidItemId IN (SELECT DISTINCT id FROM bid_item WHERE id in (SELECT DISTINCT bidItemId FROM bid_manager WHERE bid_manager.ownerId=ownerId) AND bidders.requestStatus = 16);
+                END
+            </pma:procedure>
+            <pma:procedure name="getBiddersSuggestedItem">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getBiddersSuggestedItem`(IN `ownerId` INT)
+                    NO SQL
+                BEGIN
+                SELECT bid.id,bid.itemName,bid.itemPriceorBudget,bid.description FROM bid_item_detail bid JOIN bidders b ON bid.id = b.suggestedItemId JOIN bid_item bi ON b.bidItemId = bi.id JOIN bid_manager bm on bi.id = bm.bidItemId WHERE bm.ownerId = ownerId;
+                END
+            </pma:procedure>
+            <pma:procedure name="getBidItem">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getBidItem`(IN `ownerId` INT)
+                    NO SQL
+                BEGIN
+                SELECT * FROM bid_item WHERE bid_item.id IN (SELECT DISTINCT bidItemId FROM bid_manager WHERE bid_manager.ownerId=ownerId);
+                END
+            </pma:procedure>
+            <pma:procedure name="getBidItemDetails">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getBidItemDetails`(IN `ownerId` INT)
+                    NO SQL
+                BEGIN
+                SELECT * FROM bid_item_detail WHERE bid_item_detail.id IN (SELECT DISTINCT bidItem FROM bid_item WHERE bid_item.id IN (SELECT  DISTINCT bidItemId FROM bid_manager WHERE bid_manager.ownerId=ownerId));
+                END
+            </pma:procedure>
+            <pma:procedure name="getBidItemImages">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getBidItemImages`(IN `ownerId` INT)
+                    NO SQL
+                BEGIN
+                SELECT bii.id,bii.parentId,bii.filename FROM bid_item_img bii JOIN
+                bid_item_detail bid ON bii.parentId = bid.id JOIN bidders b on bii.parentId = b.suggestedItemId JOIN bid_item bi ON bii.parentId = bi.bidItem JOIN bid_manager bm ON bi.id = bm.bidItemId WHERE bm.ownerId = ownerId OR b.accountId = ownerId;
+                END
+            </pma:procedure>
+            <pma:procedure name="getOtherBidItems">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getOtherBidItems`(IN `ownerId` INT)
+                    NO SQL
+                BEGIN
+                SELECT * FROM bidders b WHERE b.accountId = ownerId AND b.requestStatus != 17;
+                END
+            </pma:procedure>
+            <pma:procedure name="getOthersBidItemDetails">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getOthersBidItemDetails`(IN `ownerId` INT)
+                    NO SQL
+                BEGIN
+                SELECT * FROM bid_item_detail WHERE bid_item_detail.id IN (SELECT DISTINCT suggestedItemId FROM bidders WHERE bidders.accountId = ownerId);
+                END
+            </pma:procedure>
+            <pma:procedure name="getStoreItem">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getStoreItem`(IN `storeId` INT)
+                    NO SQL
+                BEGIN
+                	SELECT * FROM item WHERE id IN (SELECT DISTINCT itemId FROM storeitem WHERE storeitem.storeId=storeId);
+                END
+            </pma:procedure>
+            <pma:procedure name="getStoreItemImage">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getStoreItemImage`(IN `id` INT)
+                    NO SQL
+                BEGIN
+                	SELECT * FROM item_img WHERE parentId IN (SELECT DISTINCT itemId FROM storeitem WHERE storeitem.storeId=storeId);
+                END
+            </pma:procedure>
+            <pma:procedure name="getStoreItemRate">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getStoreItemRate`(IN `id` INT)
+                    NO SQL
+                BEGIN
+                	SELECT * FROM item_rating WHERE itemId IN (SELECT DISTINCT itemId FROM storeitem WHERE storeitem.storeId=storeId);
+                END
+            </pma:procedure>
+            <pma:procedure name="getStoreItemReviews">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getStoreItemReviews`(IN `id` INT)
+                    NO SQL
+                BEGIN
+                SELECT * FROM item_reviews WHERE itemId IN (SELECT DISTINCT itemId FROM storeitem WHERE storeitem.storeId=storeId);
+                END
+            </pma:procedure>
+            <pma:procedure name="getStores">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getStores`(IN `id` INT)
+                    NO SQL
+                BEGIN
+                SELECT DISTINCT storeId FROM storeitem WHERE storeId != id;
+                END
+            </pma:procedure>
+            <pma:procedure name="getUsersByLocation">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `getUsersByLocation`(IN `zipCode` INT)
+                    NO SQL
+                BEGIN
+                SELECT id FROM user_account WHERE user_account.zipCode = zipCode;
+                END
+            </pma:procedure>
+            <pma:procedure name="removeRequest">
+                CREATE DEFINER=`root`@`localhost` PROCEDURE `removeRequest`(IN `bidId` INT)
+                    NO SQL
+                BEGIN
+                
+                DELETE FROM bid_item_detail WHERE id IN (SELECT DISTINCT suggestedItemId FROM bidders WHERE bidders.bidItemId = bidId);
+                
+                DELETE FROM bidders WHERE bidders.bidItemId = bidId;
+                
+                DELETE FROM bid_item_detail WHERE id IN (SELECT DISTINCT bidItem FROM bid_item WHERE bid_item.id = bidId);
+                
+                DELETE FROM bid_item WHERE bid_item.id = bidId;
+                
+                DELETE FROM bid_manager WHERE bid_manager.bidItemId = bidId;
+                
+                END
+            </pma:procedure>
+        </pma:database>
+    </pma:structure_schemas>
+</pma_xml_export>
